@@ -14,9 +14,11 @@ code {
 }
 
 .site-layout-content {
-  min-height: 280px;
+  min-height: 80px;
   padding: 24px;
   background: #fff;
+  overflow: scroll;
+  text-align: center;
 }
 .logo {
   float: left;

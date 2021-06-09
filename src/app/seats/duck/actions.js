@@ -8,7 +8,14 @@ const add = item => ({
     type: types.ADD_SEAT, item
 });
 
-export default {
+const set = items => ({
+    type: types.SET_SEATS, items
+});
+
+const exportedActions = {
     reset,
-    add
+    add,
+    set
 };
+
+export default exportedActions;

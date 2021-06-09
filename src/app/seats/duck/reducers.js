@@ -15,6 +15,10 @@ const seatsReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state, list: [...state.list, action.item]
             }
+        case types.SET_SEATS:
+            return {
+                ...state, list: [action.item]
+            }
         default:
             return state
     }

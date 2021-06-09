@@ -10,13 +10,13 @@ function App() {
           <Header style={{backgroundColor: '#1890ff'}}>
             <div className="logo" />
           </Header>
-          <Content style={{ padding: '50px 50px' }}>
+          <Content style={{ padding: '50px 50px'}}>
             <SeatsContainer />
           </Content>
           <Footer style={{ textAlign: 'center' }}>Reservation Web APP ©2021</Footer>
       </Layout>
 
   );
-}
+};
 
 export default App;

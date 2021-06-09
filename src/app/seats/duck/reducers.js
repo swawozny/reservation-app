@@ -2,32 +2,7 @@ import types from './types';
 
 const INITIAL_STATE = {
     listName: 'Seats',
-    list: [
-        {
-            "id": "s07",
-            "cords": {
-                "x": 0,
-                "y": 7
-            },
-            "reserved": false
-        },
-        {
-            "id": "s08",
-            "cords": {
-                "x": 0,
-                "y": 8
-            },
-            "reserved": true
-        },
-        {
-            "id": "s09",
-            "cords": {
-                "x": 0,
-                "y": 9
-            },
-            "reserved": true
-        }
-    ]
+    list: []
 };
 
 const seatsReducer = (state = INITIAL_STATE, action) => {
@@ -35,6 +10,10 @@ const seatsReducer = (state = INITIAL_STATE, action) => {
         case types.RESET_SEATS:
             return {
                 ...state, list: []
+            }
+        case types.ADD_SEAT:
+            return {
+                ...state, list: [...state.list, action.item]
             }
         default:
             return state

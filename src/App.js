@@ -10,7 +10,10 @@ function App() {
       <Router>
           <Layout className="layout">
               <Header style={{backgroundColor: '#1890ff'}}>
-                <div className="logo" />
+                <div className="logo">
+                    <h1 style={{color: "white"}}>ReservationApp</h1>
+                </div>
+
               </Header>
               <Content style={{ padding: '50px 50px'}}>
                   <Switch>

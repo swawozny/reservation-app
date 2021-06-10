@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {Button, Row, Col, Checkbox, Form, InputNumber} from "antd";
-import {getAllSeats} from "../../seats/duck/operations";
 import {connect} from "react-redux";
 import {reservationActions} from "../../reservations/duck/actions";
-import './home.css'
+import {getAllSeats} from "../../seats/duck/operations";
 import SeatsContainer from "../../seats/components/SeatsContainer";
+import './home.css'
 
 const HomeContainer = ({seats, reservations, reserveSeat, getAllSeats}) => {
     const [state, setState] = useState(false)
+    const [error, setError] = useState("")
+
 
     useEffect(() => {
         getAllSeats()
@@ -16,24 +18,78 @@ const HomeContainer = ({seats, reservations, reserveSeat, getAllSeats}) => {
     const [form] = Form.useForm();
 
     const onInputChange = (event) => {
-        console.log(event)
         form.setFieldsValue({
             seatsNumber: event
         });
-        console.log(form.getFieldsValue())
     };
 
     const onCheckBoxChange = (event) => {
-        console.log(event)
         form.setFieldsValue({
             closeTogether: event.target.checked
         });
-        console.log(form.getFieldsValue())
     };
 
+    const getSeat = (seats, x, y) => {
+        const seat = seats.find(e => e.cords.x === x && e.cords.y === y)
+        return seat ? seat : false
+    };
+
+    const getRowsNumber = (seats) => {
+        return seats.length > 1 ? seats.reduce((p,c) => p.cords.x > c.cords.x ? p : c).cords.x : 0
+    };
+
+    const getColumnsNumber = (seats) => {
+        return seats.length > 1 ? seats.reduce((p,c) => p.cords.y > c.cords.y ? p : c).cords.y : 0
+    };
+
+    const getSeatsInRow = (seats, rowNumber) => {
+        let selectedSeats = [];
+        let maxSelectedSeats = []
+        Array.apply(null, {length: getColumnsNumber(seats)+1}).forEach((e, j) => {
+            const seat = getSeat(seats,rowNumber, j);
+            console.log(seat)
+            if(seat) {
+                selectedSeats.push(seat);
+                if(maxSelectedSeats.length < selectedSeats.length) {
+                    maxSelectedSeats = selectedSeats;
+                }
+            }
+            else {
+                selectedSeats = []
+            }
+        })
+        return maxSelectedSeats;
+    }
+
     const onFinish = (values) => {
-        setState(true)
-        console.log(values);
+        let notReservedSeats = []
+        seats.list.filter(e => e.reserved === false).map(e => notReservedSeats.push(e))
+
+        let seatsToReserved = []
+
+        if(values.closeTogether) {
+            Array.apply(null, {length: getRowsNumber(notReservedSeats)+1}).forEach((e, j) => {
+                let seatsInRow = getSeatsInRow(notReservedSeats, j);
+                if(seatsInRow.length >= values.seatsNumber){
+                    seatsToReserved = seatsInRow;
+                }
+            })
+            if(seatsToReserved.length >= values.seatsNumber){
+                Array.apply(null, {length: values.seatsNumber}).forEach((e, j) => {
+                    reserveSeat(seatsToReserved[j])
+                })
+                setState(true)
+            }
+        }
+        else {
+            seatsToReserved = notReservedSeats;
+            Array.apply(null, {length: values.seatsNumber}).forEach((e, j) => {
+                reserveSeat(notReservedSeats[j])
+            })
+            setState(true)
+
+        }
+        setError("Nie udało się znaleźć tyle miejsc obok siebie. Zmniejsz liczbę lub odznacz opcję.")
     };
 
     const availableSeatsNumber = seats.list.filter(e => e.reserved === false).length;
@@ -67,6 +123,8 @@ const HomeContainer = ({seats, reservations, reserveSeat, getAllSeats}) => {
                         </Form.Item>
                         <Form.Item
                             name="closeTogether"
+                            validateStatus="error"
+                            help={error}
                         >
                             <Button type="primary" size="large" htmlType="submit" className="home-form-button">
                                 Wybierz miejsca

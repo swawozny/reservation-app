@@ -17,9 +17,9 @@ const ReservationContainer = ({reservations, reservationConfirm}) => {
                     <div className="site-card-wrapper">
                         <h1>Wybrałeś następujące miejsca:</h1>
                         <Row gutter={16} style={{alignItems: 'center'}}>
-                            {reservations.list.map(reservation => {
+                            {reservations.list.map((reservation, key) => {
                                 return (
-                                    <Col xs={24} md={12} xl={8} style={{padding: '5px', textAlign: 'center'}}>
+                                    <Col key={key} xs={24} md={12} xl={8} style={{padding: '5px', textAlign: 'center'}}>
                                         <Card>
                                             <p>
                                                 rząd: {reservation.cords.y},

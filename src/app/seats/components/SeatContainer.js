@@ -9,7 +9,7 @@ const isReserved = (reservations, seat) => {
 };
 
 const SeatContainer = ({seat, seatsCounter, reserveSeat, removeReservation, reservations}) => {
-    const handleReservation = (seat, reserve) => { reserve ? reserveSeat(seat) : removeReservation(seat)};
+    const handleReservation = (seat, reserve) => { reserve ? reserveSeat(seat) : removeReservation(seat.id)};
 
     return (
         seat !== false ?
@@ -33,7 +33,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     reserveSeat: (item) => dispatch(reservationActions.add(item)),
-    removeReservation: (item) => dispatch(reservationActions.remove(item))
+    removeReservation: (id) => dispatch(reservationActions.remove(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SeatContainer);

@@ -8,8 +8,8 @@ const add = item => ({
     type: types.ADD_RESERVATION, item
 });
 
-const remove = item => ({
-    type: types.REMOVE_RESERVATION, item
+const remove = id => ({
+    type: types.REMOVE_RESERVATION, id
 });
 
 const confirm = value => ({

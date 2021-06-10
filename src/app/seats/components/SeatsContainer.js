@@ -33,9 +33,10 @@ const SeatsContainer = ({seats, getAllSeats, reservationsLength, reservationConf
         <div>
         <div className="site-layout-content">
             {Array.apply(null, {length: rowsNumber+1}).map((e, j) => (
-                <Button.Group style={{marginTop: '10px', overflow: 'scroll', alignItems: 'center', textAlign: 'center'}}>
+                <Button.Group key={j} style={{marginTop: '10px', overflow: 'scroll', alignItems: 'center', textAlign: 'center'}}>
                     {Array.apply(null, {length: columnsNumber+1}).map((e, i) => (
                         <SeatContainer
+                            key={i}
                             seat={getSeat(seats,j,i)}
                             seatsCounter={getSeat(seats,j,i) ? seatsCounter++ : seatsCounter}
                             ></SeatContainer>
@@ -48,8 +49,8 @@ const SeatsContainer = ({seats, getAllSeats, reservationsLength, reservationConf
                     <Row type="flex" justify="space-between" align="middle">
                         {legendItems.map( (e, k) => {
                             return (
-                                <Col xs={24} md={12} xl={6}>
-                                        <Button key={k} type={e.type} style={e.style} disabled={e.disabled} size="large">
+                                <Col key={k} xs={24} md={12} xl={6}>
+                                        <Button type={e.type} style={e.style} disabled={e.disabled} size="large">
                                             {e.buttonText}
                                         </Button>
                                     <p>{e.legendText}</p>

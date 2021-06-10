@@ -18,7 +18,9 @@ const reservationReducer = (state = INITIAL_STATE, action) => {
         case types.REMOVE_RESERVATION:
             return {
                 ...state,
-                list: state.list.filter(item => item !== action.payload),
+                list: state.list.filter(item => {
+                  return item !== action.item
+                }),
             }
         default:
             return state

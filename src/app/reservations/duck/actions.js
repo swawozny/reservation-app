@@ -12,7 +12,7 @@ const remove = item => ({
     type: types.REMOVE_RESERVATION, item
 });
 
-const reservationActions = {
+export const reservationActions = {
     reset,
     add,
     remove

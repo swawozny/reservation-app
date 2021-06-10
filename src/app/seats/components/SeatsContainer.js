@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {Button, Col, Layout, Row} from 'antd';
 import {getAllSeats} from "../duck/operations";
 import {buttonsList} from './buttonsList';
+import {reservationActions} from '../../reservations/duck/actions'
 
 const {Content} = Layout;
 
@@ -19,12 +20,18 @@ const getColumnsNumber = (seats) => {
     return seats.list.length > 1 ? seats.list.reduce((p,c) => p.cords.y > c.cords.y ? p : c).cords.y : 0
 };
 
+const isReserved = (reservations, seat) => {
+    const reservation = reservations.list.find(reservation => reservation.id === seat.id)
+    return reservation ? true : false
+};
 
-const SeatsContainer = ({seats, getAllSeats}) => {
+
+const SeatsContainer = ({seats, reservations, getAllSeats, reserveSeat, removeReservation}) => {
     useEffect(() => { getAllSeats() }, [getAllSeats])
     const rowsNumber = getRowsNumber(seats);
     const columnsNumber = getColumnsNumber(seats);
 
+    const handleReservation = (seat, reserve) => { reserve ? reserveSeat(seat) : removeReservation(seat) }
     let seatsCounter = 1;
 
     return (
@@ -34,7 +41,13 @@ const SeatsContainer = ({seats, getAllSeats}) => {
                 <Button.Group style={{marginTop: '10px', overflow: 'scroll', alignItems: 'center', textAlign: 'center'}}>
                     {Array.apply(null, {length: columnsNumber+1}).map((e, i) => (
                         getSeat(seats, j, i) !== false ?
-                            <Button type="primary" style={{marginRight: '10px', height: '35px', width: '70px'}} disabled={getSeat(seats,j,i).reserved} size="large">
+                            <Button
+                                    style={{marginRight: '10px', height: '35px', width: '70px'}}
+                                    disabled={getSeat(seats,j,i).reserved}
+                                    size="large"
+                                    type={isReserved(reservations, getSeat(seats, j,i)) === true ? "danger" : "primary"}
+                                    onClick={() => handleReservation(getSeat(seats,j,i), !isReserved(reservations, getSeat(seats, j,i)))}
+                            >
                                 {seatsCounter++}
                             </Button> :
                             <div style={{marginRight: '10px', height: '35px', width: '70px'}}></div>
@@ -63,11 +76,14 @@ const SeatsContainer = ({seats, getAllSeats}) => {
 };
 
 const mapStateToProps = state => ({
-    seats: state.seats
+    seats: state.seats,
+    reservations: state.reservations
 });
 
 const mapDispatchToProps = dispatch => ({
-    getAllSeats: () => dispatch(getAllSeats())
-})
+    getAllSeats: () => dispatch(getAllSeats()),
+    reserveSeat: (item) => dispatch(reservationActions.add(item)),
+    removeReservation: (id) => dispatch(reservationActions.remove(id))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SeatsContainer);

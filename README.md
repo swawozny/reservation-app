@@ -4,6 +4,9 @@ The project was created for the x-kom recruitment task. That project allows you 
 
 You should download and run example server from https://bitbucket.org/xkom/zadanie_rekrutacyjne/src/master/
 
+## Introduction
+In the app there are three views. Let me explain what each of them is responsible for.
+
 ### Home View
 
 In the home view you can choose seats number and check option that allows you to find seats next to each other. If it isn't possible you will see error message.

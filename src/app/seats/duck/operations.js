@@ -5,10 +5,11 @@ const fetchSeats = async () => {
     const json = await response.json()
 
     return json
-}
+};
 
 export const getAllSeats = () =>
     async (dispatch) => {
         const seats = await fetchSeats()
+        dispatch(actions.reset())
         seats.map(seat => dispatch(actions.add(seat)))
     }

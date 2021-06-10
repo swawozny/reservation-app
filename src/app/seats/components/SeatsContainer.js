@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
 import {Badge, Button, Col, Layout, Row} from 'antd';
 import {getAllSeats} from "../duck/operations";
-import {buttonsList} from './buttonsList';
+import {legendItems} from './LegendItems';
 import SeatContainer from "./SeatContainer";
-import {Link} from "react-router-dom";
+import ReservationContainer from "../../reservations/components/ReservationContainer";
 
 const {Content} = Layout;
 
@@ -22,11 +22,14 @@ const getColumnsNumber = (seats) => {
 };
 
 const SeatsContainer = ({seats, getAllSeats, reservationsLength}) => {
+    const [state, setState] = useState(false);
     useEffect(() => { getAllSeats() }, [getAllSeats]);
+    const onSubmit = () => setState(true);
     const rowsNumber = getRowsNumber(seats);
     const columnsNumber = getColumnsNumber(seats);
     let seatsCounter = 1;
 
+    if(state === false){
     return (
         <div>
         <div className="site-layout-content">
@@ -44,32 +47,33 @@ const SeatsContainer = ({seats, getAllSeats, reservationsLength}) => {
             <Content style={{paddingTop: "20px"}}>
                 <div className="site-layout-content">
                     <Row type="flex" justify="space-between" align="middle">
-                        {buttonsList.map( (e, k) => {
+                        {legendItems.map( (e, k) => {
                             return (
                                 <Col xs={24} md={12} xl={6}>
-                                    <Link to={e.url}>
                                         <Button key={k} type={e.type} style={e.style} disabled={e.disabled} size="large">
                                             {e.buttonText}
                                         </Button>
-                                    </Link>
                                     <p>{e.legendText}</p>
                                 </Col>
                             )})
                         }
                         <Col xs={24} md={12} xl={6}>
-                            <Link to="/summary">
                                 <Badge count={reservationsLength}>
-                                    <Button type="primary" style={{height: '50px', width: '150px'}} disabled={!reservationsLength} size="large">
+                                    <Button type="primary" style={{height: '50px', width: '150px'}} onClick={onSubmit} disabled={!reservationsLength} size="large">
                                         Zarezerwuj
                                     </Button>
                                 </Badge>
-                            </Link>
                         </Col>
                     </Row>
                 </div>
             </Content>
         </div>
-    )
+    )}
+    else {
+        return (
+            <ReservationContainer></ReservationContainer>
+        )
+    }
 };
 
 const mapStateToProps = state => ({

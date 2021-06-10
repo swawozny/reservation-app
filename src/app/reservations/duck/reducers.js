@@ -2,7 +2,8 @@ import types from './types';
 
 const INITIAL_STATE = {
     listName: 'reservations',
-    list: []
+    list: [],
+    confirmed: false
 };
 
 const reservationReducer = (state = INITIAL_STATE, action) => {
@@ -21,6 +22,11 @@ const reservationReducer = (state = INITIAL_STATE, action) => {
                 list: state.list.filter(item => {
                   return item !== action.item
                 }),
+            }
+        case types.CONFIRM_RESERVATION:
+            return {
+                ...state,
+                confirmed: action.value
             }
         default:
             return state

@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {connect} from "react-redux";
 import {Badge, Button, Col, Layout, Row} from 'antd';
 import {getAllSeats} from "../duck/operations";
+import {reservationActions} from "../../reservations/duck/actions";
 import {legendItems} from './LegendItems';
 import SeatContainer from "./SeatContainer";
 import ReservationContainer from "../../reservations/components/ReservationContainer";
@@ -21,15 +22,13 @@ const getColumnsNumber = (seats) => {
     return seats.list.length > 1 ? seats.list.reduce((p,c) => p.cords.y > c.cords.y ? p : c).cords.y : 0
 };
 
-const SeatsContainer = ({seats, getAllSeats, reservationsLength}) => {
-    const [state, setState] = useState(false);
+const SeatsContainer = ({seats, getAllSeats, reservationsLength, reservationConfirm, confirm}) => {
     useEffect(() => { getAllSeats() }, [getAllSeats]);
-    const onSubmit = () => setState(true);
     const rowsNumber = getRowsNumber(seats);
     const columnsNumber = getColumnsNumber(seats);
     let seatsCounter = 1;
 
-    if(state === false){
+    if(reservationConfirm === false){
     return (
         <div>
         <div className="site-layout-content">
@@ -59,7 +58,7 @@ const SeatsContainer = ({seats, getAllSeats, reservationsLength}) => {
                         }
                         <Col xs={24} md={12} xl={6}>
                                 <Badge count={reservationsLength}>
-                                    <Button type="primary" style={{height: '50px', width: '150px'}} onClick={onSubmit} disabled={!reservationsLength} size="large">
+                                    <Button type="primary" style={{height: '50px', width: '150px'}} onClick={() => confirm(true)} disabled={!reservationsLength} size="large">
                                         Zarezerwuj
                                     </Button>
                                 </Badge>
@@ -78,11 +77,13 @@ const SeatsContainer = ({seats, getAllSeats, reservationsLength}) => {
 
 const mapStateToProps = state => ({
     seats: state.seats,
-    reservationsLength: state.reservations.list.length
+    reservationsLength: state.reservations.list.length,
+    reservationConfirm: state.reservations.confirmed
 });
 
 const mapDispatchToProps = dispatch => ({
-    getAllSeats: () => dispatch(getAllSeats())
+    getAllSeats: () => dispatch(getAllSeats()),
+    confirm: (value) => dispatch(reservationActions.confirm(value))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SeatsContainer);

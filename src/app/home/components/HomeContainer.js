@@ -32,8 +32,6 @@ const HomeContainer = ({seats, reservations, reserveSeat, getAllSeats}) => {
     };
 
     const onFinish = (values) => {
-       // values.map((e,k) => {
-         //  reserveSeat("elo" + k)})
         setState(true)
         console.log(values);
     };

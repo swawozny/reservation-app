@@ -1,27 +1,28 @@
 export const buttonsList = [
     {
-        text: "X",
-        upperText: "Miejsce dostępne",
+        buttonText: "X",
+        legendText: "Miejsca dostępne",
         type: "primary",
         disabled: false,
         style: {height: '35px', width: '70px'}
     },
     {
-        text: "X",
-        upperText: "Miejsca zarezerwowane",
+        buttonText: "X",
+        legendText: "Miejsca zarezerwowane",
         type: "primary",
         disabled: true,
         style: {height: '35px', width: '70px'}
     },
     {
-        text: "X",
-        upperText: "Twój wybór",
+        buttonText: "X",
+        legendText: "Twój wybór",
         type: "danger",
         disabled: false,
         style: {height: '35px', width: '70px'}
-    },    {
-        text: "Zarezerwuj",
-        upperText: "",
+    },
+    {
+        buttonText: "Zarezerwuj",
+        legendText: "",
         type: "primary",
         disabled: false,
         style: {height: '50px', width: '150px'}

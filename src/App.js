@@ -15,7 +15,7 @@ function App() {
               <Content style={{ padding: '50px 50px'}}>
                   <Switch>
                       {MenuItems.map((item, index) => {
-                          return (<Route key={index} path={item.url} component={item.componentName}/>)
+                          return (<Route key={index} exact path={item.url} component={item.componentName}/>)
                       })}
                   </Switch>
               </Content>

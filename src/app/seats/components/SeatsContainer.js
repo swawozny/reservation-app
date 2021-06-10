@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {connect} from "react-redux";
-import {Button, Col, Layout, Row} from 'antd';
+import {Badge, Button, Col, Layout, Row} from 'antd';
 import {getAllSeats} from "../duck/operations";
 import {buttonsList} from './buttonsList';
 import SeatContainer from "./SeatContainer";
@@ -58,9 +58,11 @@ const SeatsContainer = ({seats, getAllSeats, reservationsLength}) => {
                         }
                         <Col xs={24} md={12} xl={6}>
                             <Link to="/summary">
-                                <Button type="primary" style={{height: '50px', width: '150px'}} disabled={!reservationsLength} size="large">
-                                    Zarezerwuj
-                                </Button>
+                                <Badge count={reservationsLength}>
+                                    <Button type="primary" style={{height: '50px', width: '150px'}} disabled={!reservationsLength} size="large">
+                                        Zarezerwuj
+                                    </Button>
+                                </Badge>
                             </Link>
                         </Col>
                     </Row>

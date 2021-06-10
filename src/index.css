@@ -13,6 +13,11 @@ code {
     monospace;
 }
 
+.site-card-wrapper {
+  padding: 30px;
+  background: #ececec;
+}
+
 .site-layout-content {
   min-height: 80px;
   padding: 24px;

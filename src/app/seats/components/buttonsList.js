@@ -19,13 +19,6 @@ export const buttonsList = [
         type: "danger",
         disabled: false,
         style: {height: '35px', width: '70px'}
-    },
-    {
-        buttonText: "Zarezerwuj",
-        legendText: "",
-        type: "primary",
-        disabled: false,
-        style: {height: '50px', width: '150px'}
     }
 ]
 

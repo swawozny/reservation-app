@@ -4,6 +4,7 @@ import {Button, Col, Layout, Row} from 'antd';
 import {getAllSeats} from "../duck/operations";
 import {buttonsList} from './buttonsList';
 import SeatContainer from "./SeatContainer";
+import {Link} from "react-router-dom";
 
 const {Content} = Layout;
 
@@ -20,7 +21,7 @@ const getColumnsNumber = (seats) => {
     return seats.list.length > 1 ? seats.list.reduce((p,c) => p.cords.y > c.cords.y ? p : c).cords.y : 0
 };
 
-const SeatsContainer = ({seats, getAllSeats}) => {
+const SeatsContainer = ({seats, getAllSeats, reservationsLength}) => {
     useEffect(() => { getAllSeats() }, [getAllSeats]);
     const rowsNumber = getRowsNumber(seats);
     const columnsNumber = getColumnsNumber(seats);
@@ -46,13 +47,22 @@ const SeatsContainer = ({seats, getAllSeats}) => {
                         {buttonsList.map( (e, k) => {
                             return (
                                 <Col xs={24} md={12} xl={6}>
-                                    <Button key={k} type={e.type} style={e.style} disabled={e.disabled} size="large">
-                                        {e.buttonText}
-                                    </Button>
+                                    <Link to={e.url}>
+                                        <Button key={k} type={e.type} style={e.style} disabled={e.disabled} size="large">
+                                            {e.buttonText}
+                                        </Button>
+                                    </Link>
                                     <p>{e.legendText}</p>
                                 </Col>
                             )})
                         }
+                        <Col xs={24} md={12} xl={6}>
+                            <Link to="/summary">
+                                <Button type="primary" style={{height: '50px', width: '150px'}} disabled={!reservationsLength} size="large">
+                                    Zarezerwuj
+                                </Button>
+                            </Link>
+                        </Col>
                     </Row>
                 </div>
             </Content>
@@ -61,7 +71,8 @@ const SeatsContainer = ({seats, getAllSeats}) => {
 };
 
 const mapStateToProps = state => ({
-    seats: state.seats
+    seats: state.seats,
+    reservationsLength: state.reservations.list.length
 });
 
 const mapDispatchToProps = dispatch => ({

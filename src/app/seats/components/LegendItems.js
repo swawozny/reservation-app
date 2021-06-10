@@ -1,4 +1,4 @@
-export const buttonsList = [
+export const legendItems = [
     {
         buttonText: "X",
         legendText: "Miejsca dostępne",
@@ -22,4 +22,4 @@ export const buttonsList = [
     }
 ]
 
-export default buttonsList;
+export default legendItems;

@@ -1,7 +1,7 @@
 import actions from './actions'
 
 export const fetchSeats = async () => {
-    const response = await fetch('http://localhost:3000/seats', { method: 'GET' }).catch(
+    const response = await fetch(process.env.REACT_APP_API_URL, { method: 'GET' }).catch(
         error => {
             throw new Error("API seems to be down")
         }
@@ -15,4 +15,4 @@ export const getAllSeats = () =>
         const seats = await fetchSeats()
         dispatch(actions.reset())
         seats.map(seat => dispatch(actions.add(seat)))
-}
+};
